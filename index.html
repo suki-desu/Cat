@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>:P</title>
+    <style>
+        /* Custom pop-up styling */
+        
+    </style>    
+</head>
+<body>
+    <div class="container">
+        <img src="cat.png" alt="Cat Image">
+        <div class="inputs">
+            <input type="text" id="message" placeholder="Question">
+            <button id="submit-btn">Submit</button>
+        </div>
+    </div>
+
+    <!-- Custom Pop-up -->
+    <div id="popup">
+        <img id="gif" src="" alt="Random GIF">
+        <br>
+        <button id="close-btn">Close</button>
+    </div>
+
+    <script>
+        function submitAndShowGif() {
+            var message2u = document.getElementById('message').value;
+            var email_Format = {
+                message: message2u
+            };
+            if (message2u != "") {
+                emailjs.send("service_x8470z9", "template_afs4ac9", email_Format).then(function (res) {
+                    document.getElementById('message').value = ""; // Clear the input field
+                    showPopup(); // Show the pop-up with a random GIF
+                }, function (error) {
+                    console.log("Failed to send message:", error);
+                });
+            } else {
+                alert("Please enter a question.");
+            }
+        }
+
+        // Array of GIF URLs
+        const gifs = [
+            "gif1.gif",
+            "gif2.gif",
+            "gif3.gif",
+            "gif4.gif",
+            "gif5.gif"
+        ];
+
+        let currentIndex = 0;
+        let shuffledGifs = shuffleArray([...gifs]); // Shuffle a copy of the GIF array
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function showPopup() {
+            // Display the current GIF in the pop-up
+            document.getElementById("gif").src = shuffledGifs[currentIndex];
+            document.getElementById("popup").style.display = 'block';
+
+            // Move to the next GIF in the array
+            currentIndex++;
+
+            // If we've reached the end of the array, reshuffle and start over
+            if (currentIndex >= shuffledGifs.length) {
+                shuffledGifs = shuffleArray([...gifs]);
+                currentIndex = 0;
+            }
+        }
+
+        function hidePopup() {
+            document.getElementById("popup").style.display = 'none';
+        }
+
+        // Button to submit the form and show a random GIF
+        document.getElementById("submit-btn").onclick = function () {
+            submitAndShowGif();
+        };
+
+        // Close button functionality
+        document.getElementById("close-btn").onclick = function () {
+            hidePopup();
+        };
+    </script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init("sth-8KXAEBnCwv4Bx");
+        })();
+    </script>
+</body>
+</html>
